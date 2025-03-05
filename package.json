@@ -1,5 +1,5 @@
 {
-    "name": "server-mvc-mongodb",
+    "name": "learn-server-mvc-mongodb",
     "version": "1.0.0",
     "description": "Server example for using mongodb",
     "main": "app.js",
