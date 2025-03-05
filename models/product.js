@@ -7,7 +7,7 @@ class Product {
         this.description = description;
         this.price = price;
         this.imageUrl = imageUrl;
-        this._id = id;
+        this._id = mongodb.ObjectId.createFromHexString(id);
     }
 
     save() {
@@ -15,9 +15,8 @@ class Product {
         let dbOp;
         if (this._id) {
             // Update the product
-            dbOp = db
-                .collection('products')
-                .updateOne({ _id: mongodb.ObjectId.createFromHexString(this._id) }, { $set: this });
+            console.log('test', this._id);
+            dbOp = db.collection('products').updateOne({ _id: this._id }, { $set: this });
         } else {
             // Create a new product
             dbOp = db.collection('products').insertOne(this);

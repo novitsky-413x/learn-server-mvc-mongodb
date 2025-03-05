@@ -1,4 +1,3 @@
-const mongodb = require('mongodb');
 const Product = require('../models/product');
 
 exports.getAddProduct = (req, res, next) => {
@@ -54,13 +53,7 @@ exports.postEditProduct = (req, res, next) => {
     const updatedPrice = req.body.price;
     const updatedImageUrl = req.body.imageUrl;
     const updatedDesc = req.body.description;
-    const product = new Product(
-        updatedTitle,
-        updatedDesc,
-        updatedPrice,
-        updatedImageUrl,
-        mongodb.ObjectId.createFromHexString(prodId)
-    );
+    const product = new Product(updatedTitle, updatedDesc, updatedPrice, updatedImageUrl, prodId);
     product
         .save()
         .then((result) => {
