@@ -41,6 +41,7 @@ class User {
             .find({ _id: { $in: productIds } })
             .toArray()
             .then((products) => {
+                // here mismatch may occure, clean up may come in handy
                 return products.map((p) => {
                     return {
                         ...p,
@@ -60,6 +61,30 @@ class User {
         return db
             .collection('users')
             .updateOne({ _id: this._id }, { $set: { cart: { items: updatedCartItems } } });
+    }
+
+    addOrder() {
+        const db = getDb();
+        return this.getCart()
+            .then((products) => {
+                const order = {
+                    items: products,
+                    user: {
+                        _id: this._id,
+                        name: this.name,
+                    },
+                };
+                return db.collection('orders').insertOne(order);
+            })
+            .then((result) => {
+                this.cart = { items: [] };
+                return db.collection('users').updateOne({ _id: this._id }, { $set: { cart: { items: [] } } });
+            });
+    }
+
+    getOrders() {
+        const db = getDb();
+        return db.collection('orders').find({ 'user._id': this._id }).toArray();
     }
 
     static findById(userId) {
